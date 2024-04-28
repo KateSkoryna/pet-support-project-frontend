@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { formDataEntries } from 'services/formDataEntries';
+import { NOTICE_CATEGORY } from 'const/const';
 
 const BASE_URL = 'https://pet-support-project.onrender.com/api';
 
@@ -84,12 +85,12 @@ export async function deleteAccount() {
 // ------- for all
 
 export async function requestPublicNotices(
-  categoryName = 'sell',
+  category = NOTICE_CATEGORY.SELL,
   search = null
 ) {
   try {
     const { data } = await instance.get(`/notices`, {
-      params: { search, category: categoryName },
+      params: { search, category: category },
     });
 
     return data;
@@ -100,10 +101,10 @@ export async function requestPublicNotices(
 
 // ------- for register user
 
-export async function getRegisterNotices(token, categoryName, search = null) {
+export async function getRegisterNotices(token, category, search = null) {
   setToken.set(token);
 
-  if (categoryName === 'favorite') {
+  if (category === NOTICE_CATEGORY.FAVORITE) {
     try {
       const { data } = await instance.get(`notices/user`, {
         params: { search, favorite: true },
@@ -115,7 +116,7 @@ export async function getRegisterNotices(token, categoryName, search = null) {
     }
   }
 
-  if (categoryName === 'own') {
+  if (category === NOTICE_CATEGORY.OWN) {
     try {
       const { data } = await instance.get(`notices/user`, {
         params: { search, myNotice: true },
@@ -129,7 +130,7 @@ export async function getRegisterNotices(token, categoryName, search = null) {
 
   try {
     const { data } = await instance.get(`notices/user`, {
-      params: { search, category: categoryName },
+      params: { search, category: category },
     });
 
     return data;
@@ -164,7 +165,6 @@ export async function patchNotice(editID, formData) {
         'Content-Type': `multipart/form-data;`,
       },
     });
-    console.log('data: ', data);
     return data;
   } catch (error) {
     throw error;
@@ -173,10 +173,10 @@ export async function patchNotice(editID, formData) {
 
 //========================== FAVORITE  =============================
 
-export async function toggleFavorite({ id, req, categoryName }) {
+export async function toggleFavorite({ id, req, category }) {
   try {
     const { data } = await instance[req](`notices/user/${id}/favorite`);
-    return { ...data, categoryName };
+    return { ...data, category };
   } catch (error) {
     throw error;
   }
@@ -229,11 +229,11 @@ export async function updatePetsData(petData) {
 
 //========================== USER PETS  =============================
 
-export async function deletePet(_id) {
+export async function deletePet(id) {
   try {
-    const response = await instance.delete(`/user/pets/${_id}`);
+    const response = await instance.delete(`/user/pets/${id}`);
     if (response.status === 200) {
-      return { status: response.status, petID: _id };
+      return { status: response.status, petID: id };
     }
   } catch (error) {
     throw error;
