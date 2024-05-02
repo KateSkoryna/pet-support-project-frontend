@@ -91,7 +91,7 @@ export async function requestPublicNotices(
 ) {
   try {
     const { data } = await instance.get(`/notices`, {
-      params: { search, category: category },
+      params: { search, category },
     });
 
     return data;
@@ -105,33 +105,19 @@ export async function requestPublicNotices(
 export async function getRegisterNotices(token, category, search = null) {
   setToken.set(token);
 
+  let params = {};
+
   if (category === NOTICE_CATEGORY.FAVORITE) {
-    try {
-      const { data } = await instance.get(`notices/user`, {
-        params: { search, favorite: true },
-      });
-
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  if (category === NOTICE_CATEGORY.OWN) {
-    try {
-      const { data } = await instance.get(`notices/user`, {
-        params: { search, myNotice: true },
-      });
-
-      return data;
-    } catch (error) {
-      throw error;
-    }
+    params = { search, favorite: true };
+  } else if (category === NOTICE_CATEGORY.OWN) {
+    params = { search, myNotice: true };
+  } else {
+    params = { search, category };
   }
 
   try {
     const { data } = await instance.get(`notices/user`, {
-      params: { search, category: category },
+      params,
     });
 
     return data;
