@@ -20,7 +20,7 @@ const OurFriendsItem = ({ partner }) => {
 
   const renderField = (name, value) => {
     if (!value || !value.length) {
-      return <p>-------------------</p>;
+      return <p>-----------------</p>;
     }
     let ref;
     switch (name) {
@@ -31,23 +31,35 @@ const OurFriendsItem = ({ partner }) => {
         ref = 'tel:' + value;
         break;
       case 'Time':
-        return <WorkDays workDays={value} />;
+        return (
+          <ContactsTypography component="p">
+            {name}
+            <WorkDays workDays={value} />
+          </ContactsTypography>
+        );
       case 'Address':
         return (
-          <ContactLink
-            href={value}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            {address}
-          </ContactLink>
+          <ContactsTypography component="p">
+            {name}
+            <ContactLink
+              href={value}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >
+              {address}
+            </ContactLink>
+          </ContactsTypography>
         );
       default:
         ref = value;
         break;
     }
 
-    return <ContactLink href={ref}>{value}</ContactLink>;
+    return (
+      <ContactsTypography component="p">
+        {name}:<ContactLink href={ref}>{value}</ContactLink>
+      </ContactsTypography>
+    );
   };
 
   return (
@@ -73,30 +85,18 @@ const OurFriendsItem = ({ partner }) => {
           image={imageUrl ?? defaultLogo}
           alt="company logo"
         />
-        <Grid container component="ul">
+        <Grid container component="ul" justifyContent="space-between">
           <ContactsItem item component="li" md={6}>
-            <ContactsTypography component="span">
-              {t('OurFriendsPage.item.time')}:
-              {renderField(t('OurFriendsPage.item.time'), workDays)}
-            </ContactsTypography>
+            {renderField(t('OurFriendsPage.item.time'), workDays)}
           </ContactsItem>
           <ContactsItem item component="li">
-            <ContactsTypography component="span">
-              {t('OurFriendsPage.item.address')}:
-              {renderField(t('OurFriendsPage.item.address'), addressUrl)}
-            </ContactsTypography>
+            {renderField(t('OurFriendsPage.item.address'), addressUrl)}
           </ContactsItem>
           <ContactsItem item component="li">
-            <ContactsTypography component="span">
-              {t('OurFriendsPage.item.email')}:
-              {renderField(t('OurFriendsPage.item.email'), email)}
-            </ContactsTypography>
+            {renderField(t('OurFriendsPage.item.email'), email)}
           </ContactsItem>
           <ContactsItem item component="li">
-            <ContactsTypography component="span">
-              {t('OurFriendsPage.item.phone')}:
-              {renderField(t('OurFriendsPage.item.phone'), phone)}
-            </ContactsTypography>
+            {renderField(t('OurFriendsPage.item.phone'), phone)}
           </ContactsItem>
         </Grid>
       </Box>
