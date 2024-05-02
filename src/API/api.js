@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { formDataEntries } from 'services/formDataEntries';
 import { NOTICE_CATEGORY } from 'const/const';
 import env from 'react-dotenv';
 
@@ -145,7 +144,6 @@ export async function removeNoticesById(id) {
 }
 
 export async function patchNotice(editID, formData) {
-  formDataEntries(formData);
   try {
     const { data } = await instance.patch(`notices/user/${editID}`, formData, {
       headers: {

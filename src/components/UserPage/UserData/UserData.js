@@ -66,16 +66,16 @@ function UserData() {
       {user && (
         <BoxWrapper>
           <LoaderWrapper>
-            {isBeingUpdated ? (
+            {isBeingUpdated && (
               <>
-                {isMobileScreens ? null : (
+                {isMobileScreens && (
                   <Typography sx={{ marginBottom: '5px' }}>
                     {t('User.card.onUpdate')}
                   </Typography>
                 )}
                 <Loader />
               </>
-            ) : null}
+            )}
           </LoaderWrapper>
           <BoxImageWrapper>
             <BoxImageBackdrop>
