@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { formDataEntries } from 'services/formDataEntries';
 import { NOTICE_CATEGORY } from 'const/const';
+import env from 'react-dotenv';
 
-const BASE_URL = 'https://pet-support-project.onrender.com/api';
+const BASE_URL = env.BASE_URL;
 
 const instance = axios.create({
   baseURL: BASE_URL,
