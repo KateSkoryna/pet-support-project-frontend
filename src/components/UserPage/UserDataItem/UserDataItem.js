@@ -41,7 +41,7 @@ function UserDataItem({
   };
   const debouncedInputHandler = useDebouncedCallback(value => {
     let name;
-    if (inputName === 'birthday' || 'дата народження') {
+    if (inputName === 'birthdate' || 'дата народження') {
       name = 'birthdate';
     } else {
       name = inputName;

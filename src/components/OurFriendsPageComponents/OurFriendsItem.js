@@ -10,7 +10,7 @@ import {
   TitleLink,
   BoxTitle,
 } from './OurFiendsPage.styled';
-import defaultLogo from 'images/default_logo.webp';
+import defaultLogo from '../../assets/images/default_logo.webp';
 import { useTranslation } from 'react-i18next';
 
 const OurFriendsItem = ({ partner }) => {
@@ -18,48 +18,36 @@ const OurFriendsItem = ({ partner }) => {
   const { title, url, addressUrl, address, imageUrl, phone, email, workDays } =
     partner;
 
-  const renderEmail = data => {
-    if (!data) {
+  const renderField = (name, value) => {
+    if (!value || !value.length) {
       return <p>-------------------</p>;
     }
-
-    const emailHref = 'mailto:' + data;
-
-    return <ContactLink href={emailHref}>{data}</ContactLink>;
-  };
-
-  const renderPhone = data => {
-    if (!data) {
-      return <p>-------------------</p>;
+    let ref;
+    switch (name) {
+      case 'Email':
+        ref = 'mailto:' + value;
+        break;
+      case 'Phone':
+        ref = 'tel:' + value;
+        break;
+      case 'Time':
+        return <WorkDays workDays={value} />;
+      case 'Address':
+        return (
+          <ContactLink
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            {address}
+          </ContactLink>
+        );
+      default:
+        ref = value;
+        break;
     }
 
-    const phoneHref = 'tel:' + data;
-
-    return <ContactLink href={phoneHref}>{data}</ContactLink>;
-  };
-
-  const renderAddress = data => {
-    if (!data) {
-      return <p>-------------------</p>;
-    }
-
-    return (
-      <ContactLink
-        href={data}
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-      >
-        {address}
-      </ContactLink>
-    );
-  };
-
-  const renderDate = data => {
-    if (!data || !data.length) {
-      return <p>-------------------</p>;
-    }
-
-    return <WorkDays workDays={data} />;
+    return <ContactLink href={ref}>{value}</ContactLink>;
   };
 
   return (
@@ -89,25 +77,25 @@ const OurFriendsItem = ({ partner }) => {
           <ContactsItem item component="li" md={6}>
             <ContactsTypography component="span">
               {t('OurFriendsPage.item.time')}:
-              {renderDate(workDays)}
+              {renderField(t('OurFriendsPage.item.time'), workDays)}
             </ContactsTypography>
           </ContactsItem>
           <ContactsItem item component="li">
             <ContactsTypography component="span">
               {t('OurFriendsPage.item.address')}:
-              {renderAddress(addressUrl)}
+              {renderField(t('OurFriendsPage.item.address'), addressUrl)}
             </ContactsTypography>
           </ContactsItem>
           <ContactsItem item component="li">
             <ContactsTypography component="span">
               {t('OurFriendsPage.item.email')}:
-              {renderEmail(email)}
+              {renderField(t('OurFriendsPage.item.email'), email)}
             </ContactsTypography>
           </ContactsItem>
           <ContactsItem item component="li">
             <ContactsTypography component="span">
               {t('OurFriendsPage.item.phone')}:
-              {renderPhone(phone)}
+              {renderField(t('OurFriendsPage.item.phone'), phone)}
             </ContactsTypography>
           </ContactsItem>
         </Grid>
